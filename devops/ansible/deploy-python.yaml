@@ -18,7 +18,7 @@
           - supervisor
         state: present
     - name: Create Virtual Environment
-      ansible.buildin.command:
+      ansible.builtin.command:
         cmd: python3 -m venv /opt/venv
         creates: /opt/venv
     - name: Set up Application Directory
@@ -38,7 +38,7 @@
         recursive: yes
         delete: yes
     - name: Install Python packages in virtual machine
-      ansible.build.pip:
+      ansible.builtin.pip:
         requirements: /var/projects/roadtok8s/py/src/requirements.txt
         executable: /opt/venv/bin/pip
     - name: Configure gunicorn and uvicorn with supervisor
@@ -52,7 +52,7 @@
         dest: /etc/nginx/sites-available/roadtok8s-py
       notify: restart nginx
     - name: Enable nginx site
-      command: ln -s /etc/ngnix/sites-available/roadtok8s-py /etc/nginx/sites-enabled
+      command: ln -s /etc/nginx/sites-available/roadtok8s-py /etc/nginx/sites-enabled
       args:
         creates: /opt/nginx/sites-enabled/roadtok8s-py
     - name: Remove default nginx site
@@ -71,7 +71,7 @@
         - supervisorctl update
         - supervisorctl restart roadtok8s-py
       notify: restart nginx
-    - name restart nginx
+    - name: restart nginx
       systemd:
         name: nginx
         state: restarted
