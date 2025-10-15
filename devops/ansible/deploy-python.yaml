@@ -39,7 +39,7 @@
         delete: yes
     - name: Install Python packages in virtual machine
       ansible.builtin.pip:
-        requirements: /var/projects/roadtok8s/py/src/requirements.txt
+        requirements: /opt/projects/roadtok8s/py/src/requirements.txt
         executable: /opt/venv/bin/pip
     - name: Configure gunicorn and uvicorn with supervisor
       copy:
