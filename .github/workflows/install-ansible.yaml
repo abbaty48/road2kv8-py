@@ -42,7 +42,7 @@ jobs:
       run: |
         ansible all -m ping
     - name: Install nginx with Ansible
-      working-directory: ./devops/ansible/
+      working-directory: devops/ansible/
       run: |
         ansible-playbook install-nginx.yaml
     - name: Deploy Python with Ansible
