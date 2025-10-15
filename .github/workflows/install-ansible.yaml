@@ -23,7 +23,7 @@ jobs:
     - name: Implement Ansible inventory ini
       run: |
         mkdir -p ./devops/ansible
-        export INVENTORY_FILE = "./devops/ansible/inventory.ini"
+        export INVENTORY_FILE =./devops/ansible/inventory.ini
         echo "[my_host_group]" > $INVENTORY_FILE
         echo "${{ secrets.AKAMAI_INSTANCE_IP }}" >> $INVENTORY_FILE
     - name: Implement Ansible Configuration file
