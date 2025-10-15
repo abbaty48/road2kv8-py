@@ -22,13 +22,13 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
     - name: Implement Ansible inventory ini
       run: |
-        mkdir -p ./devops/ansible
-        export INVENTORY_FILE =./devops/ansible/inventory.ini
+        mkdir -p ./devops/ansible/
+        export INVENTORY_FILE=./devops/ansible/inventory.ini
         echo "[my_host_group]" > $INVENTORY_FILE
         echo "${{ secrets.AKAMAI_INSTANCE_IP }}" >> $INVENTORY_FILE
     - name: Implement Ansible Configuration file
       run: |
-        mkdir -p ./devops/ansible
+        mkdir -p ./devops/ansible/
         cat <<EOF > ./devops/ansible/ansible.cfg
         [defaults]
         ansible_python_interpreter = /usr/bin/python
@@ -38,15 +38,15 @@ jobs:
         host_key_checking = false
         EOF
     - name: Ping Ansible Hosts
-      working-directory: ./devops/ansible
+      working-directory: ./devops/ansible/
       run: |
         ansible all -m ping
     - name: Install nginx with Ansible
-      working-directory: ./devops/ansible
+      working-directory: ./devops/ansible/
       run: |
         ansible-playbook install-nginx.yaml
     - name: Deploy Python with Ansible
-      working-directory: ./devops/ansible
+      working-directory: ./devops/ansible/
       run: |
         ansible-playbook deploy-python.yaml
 
