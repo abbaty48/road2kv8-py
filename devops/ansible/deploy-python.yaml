@@ -23,10 +23,10 @@
         creates: /opt/venv
     - name: Set up Application Directory
       file:
-        path: "${{ item }}"
+        path: "{{ item }}"
         state: directory
-        owner: "${{ ansibile_user }}"
-        group: "${{ ansibile_user }}"
+        owner: "{{ ansibile_user }}"
+        group: "{{ ansibile_user }}"
         mode: "0755"
       with_items:
         - /opt/projects/roadtok8s/py/src
