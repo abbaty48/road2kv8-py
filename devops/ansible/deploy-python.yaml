@@ -72,6 +72,6 @@
         - supervisorctl restart roadtok8s-py
       notify: restart nginx
     - name: restart nginx
-      systemd:
+      service:
         name: nginx
         state: restarted
