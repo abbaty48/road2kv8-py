@@ -10,7 +10,7 @@ jobs:
       REPO: "${{ secrets.DOCKERHUB_REPO }}"
     steps:
     - uses: actions/checkout@v4
-    - uses: docker/login-action@3
+    - uses: docker/login-action@v3.6.0
       with:
         username: "$DH_USER"
         password: "$DH_PAT"
