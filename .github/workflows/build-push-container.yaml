@@ -22,4 +22,4 @@ jobs:
           .
     - name: Push the Container"${{ secrets.DOCKERHUB_USERNAME }}"
       run: |
-        docker push "$DHDOCKERHUB_USERNAME_USER/$REPO" --all-tags
+        docker push "$DH_USER/$REPO" --all-tags
