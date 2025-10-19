@@ -1,5 +1,5 @@
 # Get python base image
-FROM python:3.13.9-alpine3.22
+FROM python:3.13.9
 # Create or Move into /app directory
 WORKDIR /app
 # Copy src files to base /app directory
