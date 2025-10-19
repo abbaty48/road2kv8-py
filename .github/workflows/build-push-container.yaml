@@ -1,6 +1,6 @@
 name: Build & Push Container
 on:
-  workflow_dipatch:
+  workflow_dispatch:
 jobs:
   build-push:
     runs-on: ubuntu-latest  
