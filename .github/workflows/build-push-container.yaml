@@ -1,0 +1,25 @@
+name: Build & Push Container
+on:
+  workflow_dipatch:
+jobs:
+  build-push:
+    runs-on: ubuntu-latest  
+    env:
+      DH_USER: "${{ secrets.DOCKERHUB_USERNAME }}"
+      DH_PAT: "${{ secrets.DOCKERHUB_PAT }}"
+      REPO: "${{ secrets.DOCKERHUB_REPO }}"
+    steps:
+    - uses: actions/checkout@v4
+    - uses: docker/login-action@2
+      with:
+        username: "$DH_USER"
+        password: "$DH_PAT"
+    - name: Build the Container
+      run: |
+        docker build -f dockerfile \
+        -t "$DH_USER/$REPO:latest" \
+        -t "$DH_USER/$REPO:${{ github.sha }}" \
+        .
+    - name: Push the Container
+      run: |
+        docker push "$DHDOCKERHUB_USERNAME_USER/$REPO" --all-tags
