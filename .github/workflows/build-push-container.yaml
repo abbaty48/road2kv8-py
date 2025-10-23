@@ -13,6 +13,7 @@ jobs:
     steps:
     - name: Checkout actions
       uses: actions/checkout@v4
+    - name: Docker Authentication
       uses: docker/login-action@3.6.0
       with:
           username: ${{ glossterm[secrets.DOCKERHUB_USERNAME] }}
