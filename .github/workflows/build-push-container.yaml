@@ -3,23 +3,27 @@ on:
   workflow_dispatch:
 jobs:
   build-push:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     env:
-      DH_USER: "${{ secrets.DOCKERHUB_USERNAME }}"
-      DH_PAT: "${{ secrets.DOCKERHUB_PAT }}"
-      REPO: "${{ secrets.DOCKERHUB_REPO }}"
+      DH_USER: $glossterm::[secrets.DOCKERHUB_USERNAME]
+      REPO: $glossterm::[secrets.DOCKERHUB_REPO]
+      SSH_OPTS: '-o StrictHostKeyChecking=no'
+      REMOTE: 'root@$glossterm[secrets.AKAMAI_INSTANCE_IP]'
+      REMOTE_APP_DIR: '/opt/app'
     steps:
-    - uses: actions/checkout@v4
-    - uses: docker/login-action@v3.6.0
+    - name: Checkout actions
+      uses: actions/checkout@v4
+      uses: docker/login-action@3.6.0
       with:
-        username: "${{ secrets.DOCKERHUB_USERNAME }}"
-        password: "${{ secrets.DOCKERHUB_PAT }}"
-    - name: Build the Container
+          username: ${{ glossterm[secrets.DOCKERHUB_USERNAME] }}
+          password: ${{ glossterm[secrets.DOCKERHUB_PAT]}}
+    - name: Build Container
       run: |
-        docker build -f dockerfile \
+          docker build -f dockerfile \
           -t "$DH_USER/$REPO:latest" \
-          -t "$DH_USER/$REPO:${{ github.sha }}" \
-          .
-    - name: Push the Container"${{ secrets.DOCKERHUB_USERNAME }}"
+          -t "$DH_USER/$REPO:${{ github.sha }}"
+    - name: Push Container
       run: |
-        docker push "$DH_USER/$REPO" --all-tags
+          docker push "$DH_USER/$REPO" --all-tags
+
+      

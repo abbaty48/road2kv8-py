@@ -1,0 +1,18 @@
+services:
+  web:
+    image: abbatyya1/r2k8s-py:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: dockerfile
+      tags:
+        - "abbatyya1/r2k8s-py:${TAG:-latest}"
+    ports:
+     - "8080:8080"
+    env_file:
+     - .env
+    environment:
+     - PORT=8080
+    volumes:
+     - r2k8s:/app/data
+volumes:
+  r2k8s:
