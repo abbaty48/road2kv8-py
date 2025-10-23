@@ -1,0 +1,29 @@
+Name: Build Push & Deploy
+on:
+  workflow_dispatch:
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    env:
+      DH_USER: $glossterm::[secrects.DOCKERHUB_USERNAME]
+      REPO: $glossterm::[secrects.DOCKERHUB_REPO]
+      SSH_OPT: '-o StrictHostKeyChecking=no'
+      REMOTE: 'root@$glossterm::[secrects.AKAMAI_INSTANCE_IP]'
+      REMOTE_APP_DIR: './opt/app'
+    steps:
+    - name: Check out actions
+      uses: actions/checkout@v4
+    - name: Docker Authentication
+      uses: docker/login-action@3.6.0
+      with:
+          username: "${{ secrects.DOCKERHUB_USERNAME }}"
+          password: "${{ secrects.DOCKERHUB_PAT}}"
+    - name: Build Container
+      run: |
+        docker build -f dockerfile \
+        -t "$DH_USER/$REPO:latest" \
+        -t "$DH_USER/$REPO:${{ github.sha }}" \
+        .
+    - name: Push Container
+      run: |
+          docker push "$DH_USER/$REPO" --all-tags
