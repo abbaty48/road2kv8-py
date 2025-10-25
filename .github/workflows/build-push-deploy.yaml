@@ -74,3 +74,7 @@ jobs:
           cd $REMOTE_APP_DIR
           docker compose up -d
         EOF
+    - name: Clean up SSH PRIVATE KEY
+      run: rm .env
+    - name: Clean up SSH KEY
+      run: rm ~/.ssh/id_rsa
