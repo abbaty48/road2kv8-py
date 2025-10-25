@@ -29,8 +29,10 @@ jobs:
         docker push "$DH_USER/$REPO" --all-tags
     - name: Implement SSH Privacy
       run: |
-        mkdir ~/.ssh/
+        mkdir -p ~/.ssh/
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "Host ${{ secrets.AKAMAI_INSTANCE_IP }}" > ~/.ssh/config
+        echo "StrictHostKeyChecking no" >> ~/.ssh/config
         chmod 600 ~/.ssh/id_rsa
     - name: Install Docker and Docker Compose on server
       run: |
