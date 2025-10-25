@@ -8,7 +8,7 @@ jobs:
       DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       REPO: ${{ secrets.DOCKERHUB_REPO }}
       SSH_OPT: "-o StrictHostKeyChecking=no"
-      REMOTE: "root@${{ secrets.AKAMAI_INSTANCE_IP }}"
+      REMOTE: "root@${{secrets.AKAMAI_INSTANCE_IP}}"
       REMOTE_APP_DIR: './opt/app'
     steps:
     - name: Check out actions
@@ -34,7 +34,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
     - name: Install Docker and Docker Compose on server
       run: |
-        ssh $SSH_OPT $REMOTE << EOF
+        ssh "$SSH_OPT" "$REMOTE" << EOF
           if ! command -v docker &> /dev/null; then
             curl -fsSL https://get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
