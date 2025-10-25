@@ -34,12 +34,4 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
     - name: Install Docker and Docker Compose on server
       run: |
-        ssh $SSH_OPT $REMOTE << EOF
-          if ! command -v docker &> /dev/null; then
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-            run get-docker.sh
-            # Install Docker Compose
-            sudo apt-get update
-            sudo apt-get install docker-compose-plugin
-        EOF
+        ssh $SSH_OPT $REMOTE
