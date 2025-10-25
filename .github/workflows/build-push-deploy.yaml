@@ -5,10 +5,10 @@ jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
     env:
-      DH_USER: $glossterm::[secrects.DOCKERHUB_USERNAME]
-      REPO: $glossterm::[secrects.DOCKERHUB_REPO]
+      DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+      REPO: ${{ secrets.DOCKERHUB_REPO }}
       SSH_OPT: '-o StrictHostKeyChecking=no'
-      REMOTE: 'root@$glossterm::[secrects.AKAMAI_INSTANCE_IP]'
+      REMOTE: 'root@${{ secrets.AKAMAI_INSTANCE_IP }}'
       REMOTE_APP_DIR: './opt/app'
     steps:
     - name: Check out actions
@@ -27,3 +27,4 @@ jobs:
     - name: Push Container
       run: |
           docker push "$DH_USER/$REPO" --all-tags
+
