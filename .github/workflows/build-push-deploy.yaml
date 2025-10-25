@@ -52,11 +52,25 @@ jobs:
     - name: Create Environment File
       run: |
         echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
-        echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}"
+        echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}" >> .env
     - name: Determining Directory Existence
       run: |
         ssh $SSH_OPT $REMOTE mkdir -p $REMOTE_APP_DIR
     - name: Copy Github Action to Remote Server
       run: |
         scp $SSH_OPT .env $REMOTE:$REMOTE_APP_DIR/.env
-      
+    - name: Copy Production Compose file to VM
+      run: |
+        scp $SSH_OPT compose.prod.yaml $REMOTE:$REMOTE_APP_DIR/compose.yaml
+    - name: Pull Image to VM
+      run: |
+        ssh $SSH_OPT $REMOTE << EOF
+          cd $REMOTE_APP_DIR
+          docker compose pull
+        EOF
+    - name: Run Compose
+      run: |
+        ssh $SSH_OPT $REMOTE << EOF
+          cd $REMOTE_APP_DIR
+          docker compose up -d
+        EOF
