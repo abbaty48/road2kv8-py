@@ -41,4 +41,5 @@ jobs:
             rm get-docker.sh
             sudo apt-get update
             sudo apt-get install docker-compose-plugin
+          fi
         EOF
