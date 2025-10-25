@@ -5,10 +5,10 @@ jobs:
   build-push:
     runs-on: ubuntu-latest
     env:
-      DH_USER: $glossterm::[secrets.DOCKERHUB_USERNAME]
-      REPO: $glossterm::[secrets.DOCKERHUB_REPO]
+      DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+      REPO: ${{ secrets.DOCKERHUB_REPO }}
       SSH_OPTS: '-o StrictHostKeyChecking=no'
-      REMOTE: 'root@$glossterm[secrets.AKAMAI_INSTANCE_IP]'
+      REMOTE: 'root@${{ secrets.AKAMAI_INSTANCE_IP }}'
       REMOTE_APP_DIR: '/opt/app'
     steps:
     - name: Checkout actions
@@ -16,8 +16,8 @@ jobs:
     - name: Docker Authentication
       uses: docker/login-action@3.6.0
       with:
-          username: ${{ glossterm[secrets.DOCKERHUB_USERNAME] }}
-          password: ${{ glossterm[secrets.DOCKERHUB_PAT]}}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PAT}}
     - name: Build Container
       run: |
           docker build -f dockerfile \
