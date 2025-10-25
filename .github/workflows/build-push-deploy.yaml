@@ -31,10 +31,8 @@ jobs:
       run: |
         mkdir -p ~/.ssh/
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        echo "Host ${{ secrets.AKAMAI_INSTANCE_IP }}" > ~/.ssh/config
-        echo "StrictHostKeyChecking no" >> ~/.ssh/config
         chmod 600 ~/.ssh/id_rsa
     - name: Install Docker and Docker Compose on server
       run: |
-        ssh root@172.236.233.238
+        ssh root@170.187.158.145
         echo "Successful login to your VM"
