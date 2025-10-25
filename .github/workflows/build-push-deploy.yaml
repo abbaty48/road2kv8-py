@@ -16,8 +16,8 @@ jobs:
     - name: Docker Authentication
       uses: docker/login-action@3.6.0
       with:
-          username: "${{ secrects.DOCKERHUB_USERNAME }}"
-          password: "${{ secrects.DOCKERHUB_PAT}}"
+          username: "${{ secrets.DOCKERHUB_USERNAME }}"
+          password: "${{ secrets.DOCKERHUB_PAT}}"
     - name: Build Container
       run: |
         docker build -f dockerfile \
