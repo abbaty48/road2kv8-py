@@ -38,7 +38,7 @@ jobs:
           if ! command docker &> /dev/null; then
             curl -fsSL https://get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
-            run get-docker.sh
+            rm get-docker.sh
             sudo apt-get update
             sudo apt-get install docker-compose-plugin
         EOF
