@@ -7,8 +7,8 @@ jobs:
     env:
       DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       REPO: ${{ secrets.DOCKERHUB_REPO }}
-      SSH_OPT: '-o StrictHostKeyChecking=no'
-      REMOTE: 'root@${{ secrets.AKAMAI_INSTANCE_IP }}'
+      SSH_OPT: "-o StrictHostKeyChecking=no"
+      REMOTE: "root@${{ secrets.AKAMAI_INSTANCE_IP }}"
       REMOTE_APP_DIR: './opt/app'
     steps:
     - name: Check out actions
@@ -49,3 +49,14 @@ jobs:
         ssh $SSH_OPT $REMOTE << EOF
           docker login -u $DH_USER -p ${{ secrets.DOCKERHUB_PAT }}
         EOF
+    - name: Create Environment File
+      run: |
+        echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
+        echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}"
+    - name: Determining Directory Existence
+      run: |
+        ssh $SSH_OPT $REMOTE mkdir -p $REMOTE_APP_DIR
+    - name: Copy Github Action to Remote Server
+      run: |
+        scp $SSH_OPT .env $REMOTE:$REMOTE_APP_DIR/.env
+      
