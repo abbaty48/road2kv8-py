@@ -29,10 +29,52 @@ jobs:
         docker push "$DH_USER/$REPO" --all-tags
     - name: Implement SSH Privacy
       run: |
-        mkdir -p ~/.ssh/
+        mkdir ~/.ssh/
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
     - name: Install Docker and Docker Compose on server
       run: |
-        ssh root@170.187.158.145
-        echo "Successful login to your VM"
+        ssh $SSH_OPT $REMOTE << EOF
+          if ! command -v docker &> /dev/null; then
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+            rm get-docker.sh
+            # install Docker Compose
+            sudo apt-get update
+            sudo apt-get install docker-compose-plugin
+          fi
+        EOF
+    - name: Login to Docker account
+      run: |
+        ssh $SSH_OPT $REMOTE << EOF
+          docker login -u $DH_USER -p ${{ secrets.DOCKERHUB_PAT }}
+        EOF
+    - name: Create Environment File
+      run: |
+        echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY }}" >> .env
+        echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}" >> .env
+    - name: Determining Directory Existence
+      run: |
+        ssh $SSH_OPT $REMOTE mkdir -p $REMOTE_APP_DIR
+    - name: Copy Github Action to Remote Server
+      run: |
+        scp $SSH_OPT .env $REMOTE:$REMOTE_APP_DIR/.env
+    - name: Copy Production Compose file to VM
+      run: |
+        scp $SSH_OPT compose.prod.yaml $REMOTE:$REMOTE_APP_DIR/compose.yaml
+    - name: Pull Image to VM
+      run: |
+        ssh $SSH_OPT $REMOTE << EOF
+          cd $REMOTE_APP_DIR
+          docker compose pull
+        EOF
+    - name: Run Compose
+      run: |
+        ssh $SSH_OPT $REMOTE << EOF
+          cd $REMOTE_APP_DIR
+          docker compose up -d
+        EOF
+    - name: Clean up SSH PRIVATE KEY
+      run: rm .env
+    - name: Clean up SSH KEY
+      run: rm ~/.ssh/id_rsa
