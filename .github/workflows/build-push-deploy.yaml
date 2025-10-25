@@ -1,4 +1,4 @@
-name: Build Push & Deploy
+name: Compose - Build Push & Deploy
 on:
   workflow_dispatch:
 jobs:
